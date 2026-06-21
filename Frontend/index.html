@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SinaMedis</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #f0f4f8;
+      color: #1a202c;
+      min-height: 100vh;
+    }
+
+    /* NAV */
+    nav {
+      background: #1a365d;
+      padding: 0 32px;
+      display: flex;
+      align-items: center;
+      height: 54px;
+      gap: 12px;
+    }
+
+    nav .logo {
+      color: #fff;
+      font-size: 15px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+    }
+
+    nav .logo span {
+      color: #63b3ed;
+    }
+
+    nav .divider {
+      width: 1px;
+      height: 20px;
+      background: rgba(255,255,255,0.2);
+      margin: 0 4px;
+    }
+
+    nav .nav-sub {
+      color: rgba(255,255,255,0.5);
+      font-size: 12px;
+    }
+
+    /* MAIN */
+    .main {
+      max-width: 1180px;
+      margin: 28px auto;
+      padding: 0 20px;
+    }
+
+    /* PAGE TITLE */
+    .page-title {
+      margin-bottom: 20px;
+    }
+
+    .page-title h1 {
+      font-size: 18px;
+      font-weight: 700;
+      color: #1a365d;
+    }
+
+    .page-title p {
+      font-size: 12px;
+      color: #718096;
+      margin-top: 2px;
+    }
+
+    /* STATS */
+    .stats {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+    }
+
+    .stat {
+      background: #fff;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      padding: 14px 20px;
+      min-width: 130px;
+      flex: 1;
+    }
+
+    .stat-num {
+      font-size: 28px;
+      font-weight: 800;
+      color: #1a365d;
+      line-height: 1;
+    }
+
+    .stat-label {
+      font-size: 11px;
+      color: #a0aec0;
+      margin-top: 5px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .stat.s-yellow .stat-num { color: #d69e2e; }
+    .stat.s-blue   .stat-num { color: #3182ce; }
+    .stat.s-green  .stat-num { color: #38a169; }
+
+    /* GRID */
+    .grid {
+      display: grid;
+      grid-template-columns: 340px 1fr;
+      gap: 16px;
+      align-items: start;
+    }
+
+    @media (max-width: 860px) {
+      .grid { grid-template-columns: 1fr; }
+    }
+
+    /* PANEL */
+    .panel {
+      background: #fff;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    .panel-head {
+      padding: 12px 16px;
+      border-bottom: 1px solid #e2e8f0;
+      background: #f7fafc;
+    }
+
+    .panel-head h2 {
+      font-size: 12px;
+      font-weight: 700;
+      color: #4a5568;
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+    }
+
+    .panel-body { padding: 16px; }
+
+    /* EDIT ALERT */
+    .edit-alert {
+      display: none;
+      background: #fffbeb;
+      border: 1px solid #f6e05e;
+      border-radius: 6px;
+      padding: 8px 12px;
+      font-size: 12px;
+      color: #744210;
+      margin-bottom: 12px;
+      font-weight: 600;
+    }
+
+    .edit-alert.show { display: block; }
+
+    /* FORM */
+    .field {
+      margin-bottom: 11px;
+    }
+
+    .field label {
+      display: block;
+      font-size: 11px;
+      font-weight: 600;
+      color: #4a5568;
+      margin-bottom: 4px;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+    }
+
+    input, select {
+      width: 100%;
+      padding: 8px 10px;
+      border: 1px solid #cbd5e0;
+      border-radius: 5px;
+      font-size: 13px;
+      color: #1a202c;
+      background: #fff;
+      outline: none;
+      transition: border-color 0.15s;
+    }
+
+    input:focus, select:focus {
+      border-color: #3182ce;
+    }
+
+    .btn-row {
+      display: flex;
+      gap: 8px;
+      margin-top: 14px;
+    }
+
+    .btn {
+      padding: 8px 18px;
+      border: none;
+      border-radius: 5px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+
+    .btn-primary { background: #1a365d; color: #fff; }
+    .btn-primary:hover { background: #2a4a7f; }
+    .btn-secondary { background: #edf2f7; color: #4a5568; }
+    .btn-secondary:hover { background: #e2e8f0; }
+
+    /* TABLE */
+    .table-wrap { overflow-x: auto; }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+    }
+
+    thead tr { border-bottom: 2px solid #e2e8f0; }
+
+    th {
+      padding: 10px 12px;
+      text-align: left;
+      font-size: 11px;
+      font-weight: 700;
+      color: #718096;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      white-space: nowrap;
+      background: #f7fafc;
+    }
+
+    td {
+      padding: 10px 12px;
+      border-bottom: 1px solid #f0f4f8;
+      vertical-align: middle;
+    }
+
+    tbody tr:hover { background: #f7fafc; }
+    tbody tr:last-child td { border-bottom: none; }
+
+    /* BADGES */
+    .badge {
+      display: inline-block;
+      padding: 2px 9px;
+      border-radius: 4px;
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    .b-menunggu  { background: #fefcbf; color: #744210; }
+    .b-diperiksa { background: #bee3f8; color: #2c5282; }
+    .b-selesai   { background: #c6f6d5; color: #22543d; }
+    .b-bpjs      { background: #e9d8fd; color: #553c9a; }
+    .b-mandiri   { background: #fed7e2; color: #702459; }
+    .b-asuransi  { background: #bee3f8; color: #2c5282; }
+
+    /* DOKTER REL */
+    .rel-name  { font-weight: 600; font-size: 12px; color: #1a202c; }
+    .rel-spec  { font-size: 11px; color: #718096; }
+    .rel-tarif {
+      font-size: 10px;
+      font-weight: 700;
+      color: #2b6cb0;
+      background: #ebf8ff;
+      padding: 1px 6px;
+      border-radius: 3px;
+      display: inline-block;
+      margin-top: 3px;
+    }
+
+    /* ACTION */
+    .act { display: flex; gap: 5px; }
+
+    .btn-edit {
+      padding: 4px 11px;
+      background: #edf2f7;
+      color: #4a5568;
+      border: 1px solid #cbd5e0;
+      border-radius: 4px;
+      font-size: 11px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .btn-edit:hover { background: #e2e8f0; }
+
+    .btn-del {
+      padding: 4px 11px;
+      background: #fff5f5;
+      color: #c53030;
+      border: 1px solid #fed7d7;
+      border-radius: 4px;
+      font-size: 11px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .btn-del:hover { background: #fed7d7; }
+
+    .empty {
+      text-align: center;
+      padding: 36px;
+      color: #a0aec0;
+      font-size: 13px;
+    }
+
+    .mono { font-family: monospace; font-size: 12px; color: #4a5568; }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <span class="logo">Sina<span>Medis</span></span>
+    <div class="divider"></div>
+    <span class="nav-sub">Sistem Informasi Manajemen Klinik</span>
+  </nav>
+
+  <div class="main">
+
+    <div class="page-title">
+      <h1>Manajemen Pasien</h1>
+      <p>Data pasien beserta relasi dokter pemeriksa</p>
+    </div>
+
+    <div class="stats">
+      <div class="stat">
+        <div class="stat-num" id="statTotal">—</div>
+        <div class="stat-label">Total Pasien</div>
+      </div>
+      <div class="stat s-yellow">
+        <div class="stat-num" id="statMenunggu">—</div>
+        <div class="stat-label">Menunggu</div>
+      </div>
+      <div class="stat s-blue">
+        <div class="stat-num" id="statDiperiksa">—</div>
+        <div class="stat-label">Diperiksa</div>
+      </div>
+      <div class="stat s-green">
+        <div class="stat-num" id="statSelesai">—</div>
+        <div class="stat-label">Selesai</div>
+      </div>
+    </div>
+
+    <div class="grid">
+
+      <!-- FORM PANEL -->
+      <div class="panel">
+        <div class="panel-head"><h2>Input Pasien</h2></div>
+        <div class="panel-body">
+
+          <div id="editAlert" class="edit-alert">Mode Edit (mengubah data yang dipilih)</div>
+
+          <div class="field">
+            <label>NIK</label>
+            <input type="text" id="nik" placeholder="16 digit NIK">
+          </div>
+          <div class="field">
+            <label>Nama Pasien</label>
+            <input type="text" id="nama" placeholder="Nama lengkap">
+          </div>
+          <div class="field">
+            <label>Keluhan</label>
+            <input type="text" id="keluhan" placeholder="Deskripsi keluhan">
+          </div>
+          <div class="field">
+            <label>Tanggal Masuk</label>
+            <input type="datetime-local" id="tanggalMasuk">
+          </div>
+          <div class="field">
+            <label>Jenis Pembayaran</label>
+            <select id="jenisPembayaran">
+              <option value="">-- Pilih --</option>
+              <option value="BPJS">BPJS</option>
+              <option value="Mandiri">Mandiri</option>
+              <option value="Asuransi Swasta">Asuransi Swasta</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>Status Antrean</label>
+            <select id="statusAntrean">
+              <option value="Menunggu">Menunggu</option>
+              <option value="Diperiksa">Diperiksa</option>
+              <option value="Selesai">Selesai</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>Biaya Pengobatan (Rp)</label>
+            <input type="number" id="biayaPengobatan" placeholder="0">
+          </div>
+          <div class="field">
+            <label>Dokter Pemeriksa</label>
+            <select id="dokterPemeriksa">
+              <option value="">-- Pilih Dokter --</option>
+            </select>
+          </div>
+
+          <div class="btn-row">
+            <button class="btn btn-primary"   onclick="simpanPasien()">Simpan</button>
+            <button class="btn btn-secondary" onclick="resetForm()">Reset</button>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- TABLE PANEL -->
+      <div class="panel">
+        <div class="panel-head"><h2>Daftar Pasien</h2></div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>NIK</th>
+                <th>Nama</th>
+                <th>Keluhan</th>
+                <th>Masuk</th>
+                <th>Bayar</th>
+                <th>Status</th>
+                <th>Biaya</th>
+                <th>Dokter</th>
+                <th>Aksi</th>
+              </tr>
+            </thead>
+            <tbody id="pasienTable">
+              <tr><td colspan="10" class="empty">Memuat data...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <script>
+    const apiPasien = 'http://localhost:3000/api/pasien';
+    const apiDokter = 'http://localhost:3000/api/dokter';
+    let idEdit = null;
+
+    async function loadDokter() {
+      const res  = await fetch(apiDokter);
+      const data = await res.json();
+      const sel  = document.getElementById('dokterPemeriksa');
+      sel.innerHTML = '<option value="">-- Pilih Dokter --</option>';
+      data.forEach(d => {
+        sel.innerHTML += `<option value="${d._id}">${d.nama} — ${d.spesialisasi}</option>`;
+      });
+    }
+
+    async function loadPasien() {
+      const res   = await fetch(apiPasien);
+      const data  = await res.json();
+      const tbody = document.getElementById('pasienTable');
+
+      document.getElementById('statTotal').textContent     = data.length;
+      document.getElementById('statMenunggu').textContent  = data.filter(p => p.statusAntrean === 'Menunggu').length;
+      document.getElementById('statDiperiksa').textContent = data.filter(p => p.statusAntrean === 'Diperiksa').length;
+      document.getElementById('statSelesai').textContent   = data.filter(p => p.statusAntrean === 'Selesai').length;
+
+      if (!data.length) {
+        tbody.innerHTML = `<tr><td colspan="10" class="empty">Belum ada data pasien.</td></tr>`;
+        return;
+      }
+
+      tbody.innerHTML = '';
+      data.forEach((p, i) => {
+        const tgl    = new Date(p.tanggalMasuk).toLocaleDateString('id-ID', { day: '2-digit', month: 'short', year: 'numeric' });
+        const dokter = p.dokterPemeriksa;
+
+        const bStatus = { 'Menunggu': 'b-menunggu', 'Diperiksa': 'b-diperiksa', 'Selesai': 'b-selesai' }[p.statusAntrean] || '';
+        const bBayar  = { 'BPJS': 'b-bpjs', 'Mandiri': 'b-mandiri', 'Asuransi Swasta': 'b-asuransi' }[p.jenisPembayaran] || '';
+
+        tbody.innerHTML += `
+          <tr>
+            <td style="color:#a0aec0;font-size:12px">${i + 1}</td>
+            <td class="mono">${p.nik}</td>
+            <td><strong>${p.nama}</strong></td>
+            <td style="max-width:160px;font-size:12px;color:#4a5568">${p.keluhan}</td>
+            <td style="white-space:nowrap;font-size:12px">${tgl}</td>
+            <td><span class="badge ${bBayar}">${p.jenisPembayaran}</span></td>
+            <td><span class="badge ${bStatus}">${p.statusAntrean}</span></td>
+            <td style="white-space:nowrap;font-weight:700;font-size:12px">Rp${p.biayaPengobatan.toLocaleString('id-ID')}</td>
+            <td>
+              ${dokter
+                ? `<div class="rel-name">${dokter.nama}</div>
+                   <div class="rel-spec">${dokter.spesialisasi}</div>
+                   <span class="rel-tarif">Rp${dokter.tarifKonsultasi?.toLocaleString('id-ID')}</span>`
+                : '<span style="color:#a0aec0">—</span>'
+              }
+            </td>
+            <td>
+              <div class="act">
+                <button class="btn-edit" onclick='isiForm(${JSON.stringify(p)})'>Edit</button>
+                <button class="btn-del"  onclick="hapusPasien('${p._id}')">Hapus</button>
+              </div>
+            </td>
+          </tr>
+        `;
+      });
+    }
+
+    async function simpanPasien() {
+      const body = {
+        nik:             document.getElementById('nik').value,
+        nama:            document.getElementById('nama').value,
+        keluhan:         document.getElementById('keluhan').value,
+        tanggalMasuk:    document.getElementById('tanggalMasuk').value || new Date().toISOString(),
+        jenisPembayaran: document.getElementById('jenisPembayaran').value,
+        statusAntrean:   document.getElementById('statusAntrean').value,
+        biayaPengobatan: Number(document.getElementById('biayaPengobatan').value),
+        dokterPemeriksa: document.getElementById('dokterPemeriksa').value
+      };
+
+      const method = idEdit ? 'PUT' : 'POST';
+      const url    = idEdit ? `${apiPasien}/${idEdit}` : apiPasien;
+
+      await fetch(url, {
+        method,
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body)
+      });
+
+      idEdit = null;
+      document.getElementById('editAlert').classList.remove('show');
+      resetForm();
+      loadPasien();
+    }
+
+    function isiForm(p) {
+      idEdit = p._id;
+      document.getElementById('editAlert').classList.add('show');
+      document.getElementById('nik').value             = p.nik;
+      document.getElementById('nama').value            = p.nama;
+      document.getElementById('keluhan').value         = p.keluhan;
+      document.getElementById('jenisPembayaran').value = p.jenisPembayaran;
+      document.getElementById('statusAntrean').value   = p.statusAntrean;
+      document.getElementById('biayaPengobatan').value = p.biayaPengobatan;
+      const dokId = p.dokterPemeriksa?._id || p.dokterPemeriksa;
+      if (dokId) document.getElementById('dokterPemeriksa').value = dokId;
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    async function hapusPasien(id) {
+      if (!confirm('Hapus data pasien ini?')) return;
+      await fetch(`${apiPasien}/${id}`, { method: 'DELETE' });
+      loadPasien();
+    }
+
+    function resetForm() {
+      ['nik','nama','keluhan','biayaPengobatan'].forEach(id => document.getElementById(id).value = '');
+      document.getElementById('jenisPembayaran').value = '';
+      document.getElementById('statusAntrean').value   = 'Menunggu';
+      document.getElementById('tanggalMasuk').value    = '';
+      document.getElementById('dokterPemeriksa').value = '';
+      document.getElementById('editAlert').classList.remove('show');
+      idEdit = null;
+    }
+
+    loadDokter();
+    loadPasien();
+  </script>
+</body>
+</html>
