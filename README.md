@@ -32,8 +32,6 @@ sinamedis/
 ├── server.js        # Entry point aplikasi, koneksi database, & middleware
 └── index.html       # Frontend berbasis Vanilla JS dengan Fetch API
 
-http://googleusercontent.com/immersive_entry_chip/0
-
 4. **Jalankan Frontend:**
    * Buka file `index.html` menggunakan ekstensi **Live Server** di VS Code.
    * Akses aplikasi melalui browser pada alamat default: `http://127.0.0.1:8080`
