@@ -10,10 +10,10 @@ Aplikasi CRUD berbasis web untuk manajemen klinik medis yang dibangun menggunaka
 
 ## 👤 Identitas Pengembang
 
-* [cite_start]**Nama:** Ivan Sigit Santoso [cite: 2]
-* [cite_start]**NIM:** 4.33.25.1.11 [cite: 2]
-* [cite_start]**Program Studi:** D4 Teknologi Rekayasa Komputer [cite: 3]
-* [cite_start]**Institusi:** Politeknik Negeri Semarang [cite: 3]
+* **Nama:** Ivan Sigit Santoso [cite: 2]
+* **NIM:** 4.33.25.1.11 [cite: 2]
+* **Program Studi:** D4 Teknologi Rekayasa Komputer 
+* **Institusi:** Politeknik Negeri Semarang
 
 ---
 
